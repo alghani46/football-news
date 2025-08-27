@@ -55,8 +55,13 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "muhammad-rifqi46-footballnews.pbp.cs.ui.ac.id"
+    "muhammad-rifqi46-footballnews.pbp.cs.ui.ac.id",
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://muhammad-rifqi46-footballnews.pbp.cs.ui.ac.id",
+]
+
 
 
 # Application definition
