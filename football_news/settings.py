@@ -54,7 +54,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "muhammad-rifqi46-footballnews.pbp.cs.ui.ac.id",
-    "muhammad.rifqi46-footballnews.pbp.cs.ui.ac.id",
     "127.0.0.1",
     "localhost",
 ]
