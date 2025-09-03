@@ -15,8 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('main.urls')),
 ]
+#The URL path '' will be forwarded to the routes defined in urls.py inside the main application. The path URL is deliberately set to the empty string so the main page can be accessed directly.
+#The include function is used to import URL route patterns from other applications (in this case, the main application) into the project-level urls.py file.
+#The urls.py file at the project level is responsible for managing URL routes for the whole project.
