@@ -9,6 +9,27 @@ def show_main(request):
     }
     return render(request, "main.html", context)
 
+def create_news(request):
+    form = NewsForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return redirect('main:show_main')
+
+    context = {'form': form}
+    return render(request, "create_news.html", context)
+
+def show_news(request, id):
+    news = get_object_or_404(News, pk=id)
+    news.increment_views()
+
+    context = {
+        'news': news
+    }
+
+    return render(request, "news_detail.html", context)
+
+
 
 #return render(request, "main.html", context) is used to render the main.html view using the render function. The render function takes three arguments:
 #request: This is an HTTP request object sent by the user.
