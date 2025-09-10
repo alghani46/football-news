@@ -8,22 +8,26 @@
 <p>{{ class }}</p>
 
 <a href="{% url 'main:create_news' %}">
-    <button>+ Add News</button>
+  <button>+ Add News</button>
 </a>
 
 <hr>
+
+<ul>
 {% for news in news_list %}
-  <li>
-    <li style="margin-bottom: 2em;">
-  <h3>
-    <a href="{% url 'main:show_news' news.id %}">
-      {{ news.title }}
-    </a>
-  </h3>
-  <p>{{ news.content }}</p>
+  <li style="margin-bottom: 2em;">
+    <h3>
+      <a href="{% url 'main:show_news' news.id %}">
+        {{ news.title }}
+      </a>
+    </h3>
+    <p>{{ news.content }}</p>
 
-  {% if news.thumbnail %}
-    <img src="{{ news.thumbnail }}" alt="{{ news.title }}" style="max-width:200px; height:auto;">
-  {% endif %}
-</li>
-
+    {% if news.thumbnail %}
+      <img src="{{ news.thumbnail }}" alt="{{ news.title }}" style="max-width:200px; height:auto;">
+    {% endif %}
+  </li>
+{% empty %}
+  <p>No news available.</p>
+{% endfor %}
+</ul>
