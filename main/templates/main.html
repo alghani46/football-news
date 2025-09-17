@@ -7,8 +7,23 @@
 <h4>Class:</h4>
 <p>{{ class }}</p>
 
+
 <a href="{% url 'main:create_news' %}">
   <button>+ Add News</button>
+</a>
+
+<h5>Last login session: {{ last_login }}</h5>
+
+
+<a href="{% url 'main:logout' %}">
+  <button type="button">Logout</button>
+</a>
+
+<a href="?filter=all">
+  <button type="button">All Articles</button>
+</a>
+<a href="?filter=my">
+  <button type="button">My Articles</button>
 </a>
 
 <hr>
