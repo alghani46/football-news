@@ -1,0 +1,118 @@
+<!-- Modal -->
+<div id="crudModal" class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-gray-800 bg-opacity-50">
+  <div id="crudModalContent" class="bg-white rounded-lg shadow-lg w-5/6 sm:w-3/5 md:w-1/2 lg:w-2/5 xl:w-1/3 max-h-screen overflow-y-auto transform transition-all opacity-0 scale-95">
+    
+    <!-- Modal header -->
+    <div class="flex items-center justify-between p-4 border-b">
+      <div>
+        <h3 class="text-xl font-semibold text-gray-900">
+          Create New News
+        </h3>
+        <p class="text-sm text-gray-600 mt-1">Share your football news and stories with the community</p>
+      </div>
+      <button type="button" class="text-gray-400 hover:text-gray-600 text-xl" onclick="hideModal()">&times;</button>
+    </div>
+
+    <!-- Modal body -->
+    <div class="px-6 py-4 space-y-6">
+      <form id="newsForm">
+        <div class="mb-4">
+          <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+          <input type="text" id="title" name="title" class="w-full border border-gray-300 rounded-md px-3 py-2" placeholder="Enter news title" required>
+        </div>
+        <div class="mb-4">
+          <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
+          <textarea id="content" name="content" rows="3" class="w-full border border-gray-300 rounded-md px-3 py-2" placeholder="Enter news content" required></textarea>
+        </div>
+        <div class="mb-4">
+          <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+          <select id="category" name="category" class="w-full border border-gray-300 rounded-md px-3 py-2" required>
+            <option value="">Choose a category</option>
+            <option value="transfer">Transfer</option>
+            <option value="update">Update</option>
+            <option value="exclusive">Exclusive</option>
+            <option value="match">Match</option>
+            <option value="rumor">Rumor</option>
+            <option value="analysis">Analysis</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label for="thumbnail" class="block text-sm font-medium text-gray-700">Thumbnail URL</label>
+          <input type="url" id="thumbnail" name="thumbnail" class="w-full border border-gray-300 rounded-md px-3 py-2" placeholder="https://example.com/image.jpg">
+        </div>
+        <div class="mb-4 flex items-center">
+          <input id="is_featured" name="is_featured" type="checkbox" class="w-4 h-4 text-green-600">
+          <label for="is_featured" class="ml-2 text-sm">Featured News</label>
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal footer -->
+    <div class="flex justify-end gap-4 p-4 border-t">
+      <button type="button" onclick="hideModal()" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">Cancel</button>
+      <button type="submit" form="newsForm" class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Publish News</button>
+    </div>
+  </div>
+</div>
+
+<script>
+    function showModal() {
+        const modal = document.getElementById('crudModal');
+        const modalContent = document.getElementById('crudModalContent');
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            modalContent.classList.remove('opacity-0', 'scale-95');
+            modalContent.classList.add('opacity-100', 'scale-100');
+        }, 50);
+    }
+
+    function hideModal() {
+        const modal = document.getElementById('crudModal');
+        const modalContent = document.getElementById('crudModalContent');
+        modalContent.classList.remove('opacity-100', 'scale-100');
+        modalContent.classList.add('opacity-0', 'scale-95');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 150);
+    }
+
+    document.getElementById('newsForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = {
+            title: form.title.value,
+            content: form.content.value,
+            category: form.category.value,
+            thumbnail: form.thumbnail.value,
+            is_featured: form.is_featured.checked
+        };
+
+        try {
+            const response = await fetch("{% url 'main:add_news_entry_ajax' %}", { 
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (!response.ok) throw new Error("Failed to publish news");
+            await response.json();
+
+            form.reset();
+            hideModal();
+            showToast("Success", "Your news has been published!");
+
+            // Optional: reload news grid without refresh
+            if (typeof fetchNewsFromServer === "function") fetchNewsFromServer();
+
+            // Dispatch custom event to notify main.html about new data
+            document.dispatchEvent(new CustomEvent('newsAdded'));
+
+        } catch (err) {
+            showToast("Error", err.message);
+        }
+    });
+</script>
