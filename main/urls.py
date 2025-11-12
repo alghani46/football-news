@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path,include
 from main.views import show_main
 from main.views import show_main, create_news, show_news , show_xml ,show_json, show_xml_by_id, show_json_by_id,proxy_image,create_news_flutter
 from main.views import register
@@ -25,6 +25,7 @@ urlpatterns = [
     path('create-news-ajax/', views.add_news_entry_ajax, name='add_news_entry_ajax'),
     path('proxy-image/', proxy_image, name='proxy_image'),
     path('create-flutter/', create_news_flutter, name='create_news_flutter'),
+    path('auth/', include('authentication.urls')),
     
 ]
 

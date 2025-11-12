@@ -31,6 +31,7 @@ def show_main(request):
     }
     return render(request, "main.html", context)
 
+@login_required(login_url='/login')
 def create_news(request):
     form = NewsForm(request.POST or None)
 

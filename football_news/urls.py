@@ -21,6 +21,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
+    path('', include('authentication.urls')),
 ]
 #The URL path '' will be forwarded to the routes defined in urls.py inside the main application. The path URL is deliberately set to the empty string so the main page can be accessed directly.
 #The include function is used to import URL route patterns from other applications (in this case, the main application) into the project-level urls.py file.

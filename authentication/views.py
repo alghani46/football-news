@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.contrib.auth import authenticate, login as auth_login
 from django.http import JsonResponse
 import json
 from django.contrib.auth import logout as auth_logout
+from django.views.decorators.http import require_http_methods
 
 # Create your views here.
 @csrf_exempt
